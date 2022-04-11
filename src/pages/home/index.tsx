@@ -1,4 +1,4 @@
-import { Text } from "@chakra-ui/react"
+import { Center, Flex, Text } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { SearchInput } from "../../components/SearchInput/SearchInput"
 import axios from "axios"
@@ -8,6 +8,7 @@ const Home = () => {
     const [data, setData] = useState<any>()
     const [error, setError] = useState<{ error: any, status: number }>()
     const [isLoadingPokemon, setIsLoadingPokemon] = useState(false)
+    const [apiCount, setApiCount] = useState(0);
   
     const loadPokemon = async () => {
       try {
@@ -28,6 +29,7 @@ const Home = () => {
           const SUCCESS_STATUS = 200
   
           setIsLoadingPokemon(true)
+          setApiCount((prevCount) => prevCount + 1);
           const {data, status, error} = await loadPokemon()
           setIsLoadingPokemon(false)
   
@@ -48,9 +50,10 @@ const Home = () => {
     }, [search])
     return (
       <>
+      <Center h="100vh">
+        <Flex flexDirection="column">
         <Text>Debounce</Text>
-        <SearchInput value="" onChange={(v) => setSearch(v)} />
-  
+        <SearchInput value="" onChangeCustom={(v) => setSearch(v)} />
         {data && !error 
           ? <Text>{data.name} | {data.abilities[0].ability.name}</Text> 
           : null
@@ -59,6 +62,10 @@ const Home = () => {
         {error && error.status === 404 && <Text>Pokemon not found</Text>}
         {error && error.status === 500 && <Text>Internal server error</Text>}
         {isLoadingPokemon && <Text>Loading...</Text>}
+        <Text>API's call: {apiCount}</Text>
+        </Flex>
+      </Center>
+  
       </>
     )
 }
