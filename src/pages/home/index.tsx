@@ -55,7 +55,7 @@ const Home = () => {
         <Text>Debounce</Text>
         <SearchInput value="" onChangeCustom={(v) => setSearch(v)} />
         {data && !error 
-          ? <Text>{data.name} | {data.abilities[0].ability.name}</Text> 
+          ? <Text>Name: {data.name} | Ability: {data.abilities[0].ability.name}</Text> 
           : null
         }
         {search === '' && !error && !isLoadingPokemon && <Text>Please enter a pokemon name</Text>}
