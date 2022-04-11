@@ -1,13 +1,14 @@
-import { Input } from '@chakra-ui/react'
+import { Input, InputProps } from '@chakra-ui/react'
 import React, { ChangeEvent, FC, useState } from 'react'
 import useDebounce from '../../hooks/useDebounce/useDebounce'
 
-export const SearchInput: FC<{ 
+interface SearchInputProps extends InputProps {
   value: string, 
-  onChange: (v: string) => void
-}> = ({ value, onChange }) => {
+  onChangeCustom: (v: string) => void
+}
+export const SearchInput: FC<SearchInputProps> = ({ value, onChangeCustom, ...rest }) => {
   const [displayValue, setDisplayValue] = useState(value)
-  const debouncedChange = useDebounce(onChange, 500)
+  const debouncedChange = useDebounce(onChangeCustom, 500)
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { value } = e.target
@@ -16,5 +17,5 @@ export const SearchInput: FC<{
     debouncedChange(value)
   }
 
-  return (<Input value={displayValue} onChange={handleChange} />)
+  return (<Input value={displayValue} onChange={handleChange} {...rest} />)
 }
